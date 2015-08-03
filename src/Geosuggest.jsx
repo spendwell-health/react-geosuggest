@@ -171,7 +171,7 @@ var Geosuggest = React.createClass({
     if (newIndex >= 0 && newIndex <= suggestsCount) {
       newActiveSuggest = this.state.suggests[newIndex];
     }
-
+    debugger
     this.setState({activeSuggest: newActiveSuggest});
   },
 
@@ -180,12 +180,14 @@ var Geosuggest = React.createClass({
    * @param {GeosuggestItem} suggest The selected suggest item
    */
   selectSuggest: function(suggest) {
-    if (!suggest && this.state.userInput && this.state.suggests.length > 0) {
-      suggest = this.state.suggests[0]
-    } else {
-      suggest = {
-        label: this.state.userInput
-      };
+    if (!suggest) {
+      if (this.state.userInput && this.state.suggests.length > 0) {
+        suggest = this.state.suggests[0];
+      } else {
+        suggest = {
+          label: this.state.userInput
+        };
+      }
     }
 
     this.setState({
