@@ -171,7 +171,6 @@ var Geosuggest = React.createClass({
     if (newIndex >= 0 && newIndex <= suggestsCount) {
       newActiveSuggest = this.state.suggests[newIndex];
     }
-    debugger
     this.setState({activeSuggest: newActiveSuggest});
   },
 
