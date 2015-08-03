@@ -30,6 +30,7 @@ var Geosuggest = React.createClass({
     return {
       isSuggestsHidden: true,
       userInput: this.props.initialValue,
+      lastUserInput: '',
       activeSuggest: null,
       suggests: [],
       geocoder: new this.props.googleMaps.Geocoder(),
@@ -185,7 +186,7 @@ var Geosuggest = React.createClass({
         suggest = this.state.suggests[this.props.fixtures.length];
       } else {
         suggest = {
-          label: this.state.userInput
+          label: this.state.lastUserInput
         };
       }
     }
@@ -235,7 +236,7 @@ var Geosuggest = React.createClass({
   },
 
   handleFocus: function() {
-    this.setState({userInput: ''}); // reset user input to empty when clicking into box
+    this.setState({lastUserInput: this.state.userInput, userInput: ''}); // reset user input to empty when clicking into box
     this.showSuggests();
   },
 

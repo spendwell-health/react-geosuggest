@@ -35,6 +35,7 @@ var Geosuggest = React.createClass({
     return {
       isSuggestsHidden: true,
       userInput: this.props.initialValue,
+      lastUserInput: '',
       activeSuggest: null,
       suggests: [],
       geocoder: new this.props.googleMaps.Geocoder(),
@@ -189,11 +190,12 @@ var Geosuggest = React.createClass({
    */
   selectSuggest: function selectSuggest(suggest) {
     if (!suggest) {
-      if (this.state.userInput && this.state.suggests.length > 0) {
-        suggest = this.state.suggests[0];
+      // make the suggest the first non-fixture, if exists
+      if (this.state.userInput && this.state.suggests.length - this.props.fixtures.length > 0) {
+        suggest = this.state.suggests[this.props.fixtures.length];
       } else {
         suggest = {
-          label: this.state.userInput
+          label: this.state.lastUserInput
         };
       }
     }
@@ -234,6 +236,16 @@ var Geosuggest = React.createClass({
     }).bind(this));
   },
 
+  handleBlur: function handleBlur() {
+    this.selectSuggest();
+    this.hideSuggests();
+  },
+
+  handleFocus: function handleFocus() {
+    this.setState({ lastUserInput: this.state.userInput, userInput: '' }); // reset user input to empty when clicking into box
+    this.showSuggests();
+  },
+
   /**
    * Render the view
    * @return {Function} The React element to render
@@ -252,8 +264,8 @@ var Geosuggest = React.createClass({
           placeholder: this.props.placeholder,
           onKeyDown: this.onInputKeyDown,
           onChange: this.onInputChange,
-          onFocus: this.showSuggests,
-          onBlur: this.hideSuggests }),
+          onFocus: this.handleFocus,
+          onBlur: this.handleBlur }),
         React.createElement(
           'ul',
           { className: this.getSuggestsClasses() },
