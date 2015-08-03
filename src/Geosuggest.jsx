@@ -180,6 +180,7 @@ var Geosuggest = React.createClass({
    */
   selectSuggest: function(suggest) {
     if (!suggest) {
+      // make the suggest the first non-fixture, if exists
       if (this.state.userInput && (this.state.suggests.length - this.props.fixtures.length) > 0) {
         suggest = this.state.suggests[this.props.fixtures.length];
       } else {
@@ -228,6 +229,16 @@ var Geosuggest = React.createClass({
     );
   },
 
+  handleBlur: function() {
+    this.selectSuggest();
+    this.hideSuggests();
+  },
+
+  handleFocus: function() {
+    this.setState({userInput: ''}); // reset user input to empty when clicking into box
+    this.showSuggests();
+  },
+
   /**
    * Render the view
    * @return {Function} The React element to render
@@ -244,8 +255,8 @@ var Geosuggest = React.createClass({
           placeholder={this.props.placeholder}
           onKeyDown={this.onInputKeyDown}
           onChange={this.onInputChange}
-          onFocus={this.showSuggests}
-          onBlur={this.hideSuggests} />
+          onFocus={this.handleFocus}
+          onBlur={this.handleBlur} />
         <ul className={this.getSuggestsClasses()}>
           {this.getSuggestItems()}
         </ul>
