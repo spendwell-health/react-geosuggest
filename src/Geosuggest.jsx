@@ -180,8 +180,8 @@ var Geosuggest = React.createClass({
    */
   selectSuggest: function(suggest) {
     if (!suggest) {
-      if (this.state.userInput && this.state.suggests.length > 0) {
-        suggest = this.state.suggests[0];
+      if (this.state.userInput && (this.state.suggests.length - this.props.fixtures.length) > 0) {
+        suggest = this.state.suggests[this.props.fixtures.length];
       } else {
         suggest = {
           label: this.state.userInput
