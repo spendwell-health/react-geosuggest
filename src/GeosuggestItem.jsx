@@ -9,7 +9,8 @@ var GeosuggestItem = React.createClass({
     return {
       isActive: false,
       suggest: {
-        label: ''
+        label: '',
+        iconClass: ''
       },
       onSuggestSelect: function() {}
     };
@@ -45,7 +46,8 @@ var GeosuggestItem = React.createClass({
     var classes = 'geosuggest-item';
 
     classes += this.props.isActive ? ' geosuggest-item--active' : '';
-
+    classes += this.props.classDecorations ? ' ' + this.props.classDecorations : '';
+    classes += ' ' + this.props.suggest.iconClass;
     return classes;
   }
 });

@@ -1,7 +1,7 @@
 /* global google */
 
 var React = require('react'),
-  GeosuggestItem = require('./GeosuggestItem'); // eslint-disable-line
+    GeosuggestItem = require('./GeosuggestItem');
 
 var Geosuggest = React.createClass({
   /**
@@ -17,6 +17,7 @@ var Geosuggest = React.createClass({
       onSuggestSelect: function() {},
       location: null,
       radius: 0,
+      defaultIconClass: '',
       googleMaps: google && google.maps
     };
   },
@@ -79,16 +80,15 @@ var Geosuggest = React.createClass({
     var suggests = [],
       regex = new RegExp(this.state.userInput, 'gim');
 
+    // always display fixtures
     this.props.fixtures.forEach(function(suggest) {
-      if (suggest.label.match(regex)) {
-        suggest.placeId = suggest.label;
-        suggests.push(suggest);
-      }
+      suggest.placeId = suggest.label;
+      suggests.push(suggest);
     });
 
     suggestsGoogle.forEach(function(suggest) {
       suggests.push({
-        label: suggest.description,
+        label: suggest.description.replace(', United States',''),
         placeId: suggest.place_id
       });
     });
@@ -261,17 +261,25 @@ var Geosuggest = React.createClass({
     return this.state.suggests.map(function(suggest) {
       var isActive = this.state.activeSuggest &&
         suggest.placeId === this.state.activeSuggest.placeId;
-
       return (// eslint-disable-line no-extra-parens
         <GeosuggestItem
           key={suggest.placeId}
           suggest={suggest}
           isActive={isActive}
-          onSuggestSelect={this.selectSuggest} />
+          onSuggestSelect={this.selectSuggest}
+          classDecorations={this.itemClassDecorations(suggest)} />
       );
     }.bind(this));
   },
 
+  itemClassDecorations: function(suggest) {
+    var fixtures = this.props.fixtures;
+    var decorations = '';
+    decorations += (fixtures.indexOf(suggest) + 1 === fixtures.length) ? ' border-bottom' : '';
+    decorations += (typeof suggest.iconClass != 'undefined') ? (' ' + suggest.iconClass) : (' ' + this.props.defaultIconClass);
+
+    return decorations
+  },
   /**
    * The classes for the suggests list
    * @return {String} The classes
