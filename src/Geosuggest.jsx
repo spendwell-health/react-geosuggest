@@ -31,6 +31,7 @@ var Geosuggest = React.createClass({
       isSuggestsHidden: true,
       userInput: this.props.initialValue,
       lastUserInput: '',
+      mouseHoveredSuggest: null,
       activeSuggest: null,
       suggests: [],
       geocoder: new this.props.googleMaps.Geocoder(),
@@ -204,6 +205,10 @@ var Geosuggest = React.createClass({
     this.geocodeSuggest(suggest);
   },
 
+  setMouseHoveredSuggest: function(suggest) {
+    this.setState({ mouseHoveredSuggest: suggest });
+  },
+
   /**
    * Geocode a suggest
    * @param  {Object} suggest The suggest
@@ -230,12 +235,16 @@ var Geosuggest = React.createClass({
     );
   },
 
-  handleBlur: function() {
-    this.selectSuggest();
+  handleBlur: function(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    this.selectSuggest(this.state.mouseHoveredSuggest);
     this.hideSuggests();
   },
 
-  handleFocus: function() {
+  handleFocus: function(e) {
+    e.stopPropagation();
+    e.preventDefault();
     this.setState({lastUserInput: this.state.userInput, userInput: ''}); // reset user input to empty when clicking into box
     this.showSuggests();
   },
@@ -270,6 +279,7 @@ var Geosuggest = React.createClass({
    * @return {Array} The suggestions
    */
   getSuggestItems: function() {
+    var that = this;
     return this.state.suggests.map(function(suggest) {
       var isActive = this.state.activeSuggest &&
         suggest.placeId === this.state.activeSuggest.placeId;
@@ -279,6 +289,7 @@ var Geosuggest = React.createClass({
           suggest={suggest}
           isActive={isActive}
           onSuggestSelect={this.selectSuggest}
+          setMouseHoveredSuggest={that.setMouseHoveredSuggest}
           classDecorations={this.itemClassDecorations(suggest)} />
       );
     }.bind(this));

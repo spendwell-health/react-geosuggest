@@ -5,6 +5,10 @@ var GeosuggestItem = React.createClass({
    * Get the default props
    * @return {Object} The props
    */
+
+  propTypes: {
+    setMouseHoveredSuggest: React.PropTypes.func.isRequired
+  },
   getDefaultProps: function() {
     return {
       isActive: false,
@@ -16,13 +20,13 @@ var GeosuggestItem = React.createClass({
     };
   },
 
-  /**
-   * When the element gets clicked
-   * @param  {Event} event The click event
-   */
-  onClick: function(event) {
-    event.preventDefault();
-    this.props.onSuggestSelect(this.props.suggest);
+  handleMouseEnter: function(e){
+    var suggest = JSON.parse(e.target['getAttribute']('data-suggest'));
+    this.props.setMouseHoveredSuggest(suggest);
+  },
+
+  handleMouseLeave: function(e){
+    this.props.setMouseHoveredSuggest(null);
   },
 
   /**
@@ -32,7 +36,9 @@ var GeosuggestItem = React.createClass({
   render: function() {
     return (// eslint-disable-line no-extra-parens
       <li className={this.getSuggestClasses()}
-        onClick={this.onClick}>
+        data-suggest={JSON.stringify(this.props.suggest)}
+        onMouseEnter={this.handleMouseEnter}
+        onMouseLeave={this.handleMouseLeave}>
           {this.props.suggest.label}
       </li>
     );
