@@ -35,7 +35,9 @@ var Geosuggest = React.createClass({
     return {
       isSuggestsHidden: true,
       userInput: this.props.initialValue,
-      lastSuggest: null,
+      lastSuggest: {
+        label: this.props.initialValue
+      },
       mouseHoveredSuggest: null,
       activeSuggest: null,
       suggests: [],
