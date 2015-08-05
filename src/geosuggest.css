@@ -39,7 +39,7 @@
   -webkit-transition: max-height 0.2s, border 0.2s;
           transition: max-height 0.2s, border 0.2s;
 }
-.geosuggest-item-last-fixture
+.geosuggest-item-last-fixture {}
 
 .geosuggest__suggests--hidden {
   max-height: 0;
