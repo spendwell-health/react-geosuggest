@@ -19,6 +19,8 @@ var App = React.createClass({ // eslint-disable-line
           fixtures={fixtures}
           onSuggestSelect={this.onSuggestSelect}
           location={new google.maps.LatLng(53.558572, 9.9278215)}
+          initialValue='Monkeys'
+          initialLocation={{lat: 53.558572, lng: 9.9278215}}
           radius="20"
           defaultIconClass='fa fa-map-marker' />
       </div>

@@ -27,6 +27,10 @@ var Geosuggest = React.createClass({
     };
   },
 
+  propTypes: {
+    initialLocation: React.PropTypes.obj
+  },
+
   /**
    * Get the initial state
    * @return {Object} The state
@@ -36,7 +40,8 @@ var Geosuggest = React.createClass({
       isSuggestsHidden: true,
       userInput: this.props.initialValue,
       lastSuggest: {
-        label: this.props.initialValue
+        label: this.props.initialValue,
+        location: this.props.initialLocation
       },
       mouseHoveredSuggest: null,
       activeSuggest: null,
