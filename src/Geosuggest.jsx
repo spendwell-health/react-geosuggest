@@ -97,7 +97,7 @@ var Geosuggest = React.createClass({
 
     suggestsGoogle.forEach(function(suggest) {
       suggests.push({
-        label: suggest.description,
+        label: suggest.description.replace(', United States', ''),
         placeId: suggest.place_id
       });
     });
