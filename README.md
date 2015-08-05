@@ -2,10 +2,7 @@
 
 A [React](http://facebook.github.io/react/) autosuggest for the Google Maps Places API. You can also define your own suggests as defaults.
 
-
-## Demo
-
-Live demo: [ubilabs.github.io/react-geosuggest](http://ubilabs.github.io/react-geosuggest/)
+This is SpendWell Health's fork of the react-geosuggest project. It exists to add a few customized user interactions, as well as adding optional icon support.
 
 
 ## Installation
@@ -25,6 +22,7 @@ As this component uses the Google Maps Places API to get suggests, you must incl
 </html>
 ```
 
+It is published to npm as 'react-geosuggest-sw'
 
 The easiest way to use geosuggest is to install it from NPM and include it in your own React build process (using [Browserify](http://browserify.org), [Webpack](http://webpack.github.io/), etc).
 
