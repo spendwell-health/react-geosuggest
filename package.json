@@ -1,6 +1,6 @@
 {
-  "name": "react-geosuggest",
-  "version": "1.4.3",
+  "name": "react-geosuggest-sw",
+  "version": "1.4.5",
   "description": "A React autosuggest for the Google Maps Places API.",
   "main": "module/Geosuggest.js",
   "author": "Robert Katzki <katzki@ubilabs.net>",
@@ -8,10 +8,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ubilabs/react-geosuggest.git"
+    "url": "https://github.com/spendwell-health/react-geosuggest"
   },
   "bugs": {
-    "url": "https://github.com/ubilabs/react-geosuggest/issues"
+    "url": "https://github.com/spendwell-health/react-geosuggest"
   },
   "dependencies": {
     "react": "^0.13.1"

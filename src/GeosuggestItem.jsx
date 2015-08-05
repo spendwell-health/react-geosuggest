@@ -53,7 +53,6 @@ var GeosuggestItem = React.createClass({
 
     classes += this.props.isActive ? ' geosuggest-item--active' : '';
     classes += this.props.classDecorations ? ' ' + this.props.classDecorations : '';
-    classes += ' ' + this.props.suggest.iconClass;
     return classes;
   }
 });

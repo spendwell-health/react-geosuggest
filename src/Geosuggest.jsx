@@ -298,8 +298,11 @@ var Geosuggest = React.createClass({
   itemClassDecorations: function(suggest) {
     var fixtures = this.props.fixtures;
     var decorations = '';
-    decorations += (fixtures.indexOf(suggest) + 1 === fixtures.length) ? ' border-bottom' : '';
-    decorations += (typeof suggest.iconClass != 'undefined') ? (' ' + suggest.iconClass) : (' ' + this.props.defaultIconClass);
+    // allow styling of last fixture if exists
+    if (fixtures.length > 0) {
+      decorations += (fixtures.indexOf(suggest) + 1 === fixtures.length) ? ' geosuggest-item-last-fixture' : '';
+    }
+    decorations += (suggest.iconClass) ? (' ' + suggest.iconClass) : (' ' + this.props.defaultIconClass);
 
     return decorations
   },

@@ -36,6 +36,7 @@ var Geosuggest = React.createClass({
       isSuggestsHidden: true,
       userInput: this.props.initialValue,
       lastUserInput: '',
+      mouseHoveredSuggest: null,
       activeSuggest: null,
       suggests: [],
       geocoder: new this.props.googleMaps.Geocoder(),
@@ -213,6 +214,10 @@ var Geosuggest = React.createClass({
     this.geocodeSuggest(suggest);
   },
 
+  setMouseHoveredSuggest: function setMouseHoveredSuggest(suggest) {
+    this.setState({ mouseHoveredSuggest: suggest });
+  },
+
   /**
    * Geocode a suggest
    * @param  {Object} suggest The suggest
@@ -236,12 +241,16 @@ var Geosuggest = React.createClass({
     }).bind(this));
   },
 
-  handleBlur: function handleBlur() {
-    this.selectSuggest();
+  handleBlur: function handleBlur(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    this.selectSuggest(this.state.mouseHoveredSuggest);
     this.hideSuggests();
   },
 
-  handleFocus: function handleFocus() {
+  handleFocus: function handleFocus(e) {
+    e.stopPropagation();
+    e.preventDefault();
     this.setState({ lastUserInput: this.state.userInput, userInput: '' }); // reset user input to empty when clicking into box
     this.showSuggests();
   },
@@ -280,6 +289,7 @@ var Geosuggest = React.createClass({
    * @return {Array} The suggestions
    */
   getSuggestItems: function getSuggestItems() {
+    var that = this;
     return this.state.suggests.map((function (suggest) {
       var isActive = this.state.activeSuggest && suggest.placeId === this.state.activeSuggest.placeId;
       return (// eslint-disable-line no-extra-parens
@@ -288,6 +298,7 @@ var Geosuggest = React.createClass({
           suggest: suggest,
           isActive: isActive,
           onSuggestSelect: this.selectSuggest,
+          setMouseHoveredSuggest: that.setMouseHoveredSuggest,
           classDecorations: this.itemClassDecorations(suggest) })
       );
     }).bind(this));
@@ -296,8 +307,11 @@ var Geosuggest = React.createClass({
   itemClassDecorations: function itemClassDecorations(suggest) {
     var fixtures = this.props.fixtures;
     var decorations = '';
-    decorations += fixtures.indexOf(suggest) + 1 === fixtures.length ? ' border-bottom' : '';
-    decorations += typeof suggest.iconClass != 'undefined' ? ' ' + suggest.iconClass : ' ' + this.props.defaultIconClass;
+    // allow styling of last fixture if exists
+    if (fixtures.length > 0) {
+      decorations += fixtures.indexOf(suggest) + 1 === fixtures.length ? ' geosuggest-item-last-fixture' : '';
+    }
+    decorations += suggest.iconClass ? ' ' + suggest.iconClass : ' ' + this.props.defaultIconClass;
 
     return decorations;
   },
@@ -328,6 +342,10 @@ var GeosuggestItem = React.createClass({
    * Get the default props
    * @return {Object} The props
    */
+
+  propTypes: {
+    setMouseHoveredSuggest: React.PropTypes.func.isRequired
+  },
   getDefaultProps: function getDefaultProps() {
     return {
       isActive: false,
@@ -339,13 +357,13 @@ var GeosuggestItem = React.createClass({
     };
   },
 
-  /**
-   * When the element gets clicked
-   * @param  {Event} event The click event
-   */
-  onClick: function onClick(event) {
-    event.preventDefault();
-    this.props.onSuggestSelect(this.props.suggest);
+  handleMouseEnter: function handleMouseEnter(e) {
+    var suggest = JSON.parse(e.target['getAttribute']('data-suggest'));
+    this.props.setMouseHoveredSuggest(suggest);
+  },
+
+  handleMouseLeave: function handleMouseLeave(e) {
+    this.props.setMouseHoveredSuggest(null);
   },
 
   /**
@@ -357,7 +375,9 @@ var GeosuggestItem = React.createClass({
       React.createElement(
         'li',
         { className: this.getSuggestClasses(),
-          onClick: this.onClick },
+          'data-suggest': JSON.stringify(this.props.suggest),
+          onMouseEnter: this.handleMouseEnter,
+          onMouseLeave: this.handleMouseLeave },
         this.props.suggest.label
       )
     );
@@ -372,7 +392,6 @@ var GeosuggestItem = React.createClass({
 
     classes += this.props.isActive ? ' geosuggest-item--active' : '';
     classes += this.props.classDecorations ? ' ' + this.props.classDecorations : '';
-    classes += ' ' + this.props.suggest.iconClass;
     return classes;
   }
 });
