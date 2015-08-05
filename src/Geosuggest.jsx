@@ -30,7 +30,7 @@ var Geosuggest = React.createClass({
     return {
       isSuggestsHidden: true,
       userInput: this.props.initialValue,
-      lastUserInput: '',
+      lastSuggest: null,
       mouseHoveredSuggest: null,
       activeSuggest: null,
       suggests: [],
@@ -90,7 +90,7 @@ var Geosuggest = React.createClass({
 
     suggestsGoogle.forEach(function(suggest) {
       suggests.push({
-        label: suggest.description.replace(', United States',''),
+        label: suggest.description,
         placeId: suggest.place_id
       });
     });
@@ -186,15 +186,14 @@ var Geosuggest = React.createClass({
       if (this.state.userInput && (this.state.suggests.length - this.props.fixtures.length) > 0) {
         suggest = this.state.suggests[this.props.fixtures.length];
       } else {
-        suggest = {
-          label: this.state.lastUserInput
-        };
+        suggest = this.state.lastSuggest || {};
       }
     }
 
     this.setState({
       isSuggestsHidden: true,
-      userInput: suggest.label
+      userInput: suggest.label,
+      lastSuggest: suggest
     });
 
     if (suggest.location) {
@@ -235,17 +234,17 @@ var Geosuggest = React.createClass({
     );
   },
 
-  handleBlur: function(e) {
+  onBlur: function(e) {
     e.stopPropagation();
     e.preventDefault();
     this.selectSuggest(this.state.mouseHoveredSuggest);
     this.hideSuggests();
   },
 
-  handleFocus: function(e) {
+  onFocus: function(e) {
     e.stopPropagation();
     e.preventDefault();
-    this.setState({lastUserInput: this.state.userInput, userInput: ''}); // reset user input to empty when clicking into box
+    this.setState({userInput: ''}); // reset user input to empty when clicking into box
     this.showSuggests();
   },
 
@@ -265,8 +264,8 @@ var Geosuggest = React.createClass({
           placeholder={this.props.placeholder}
           onKeyDown={this.onInputKeyDown}
           onChange={this.onInputChange}
-          onFocus={this.handleFocus}
-          onBlur={this.handleBlur} />
+          onFocus={this.onFocus}
+          onBlur={this.onBlur} />
         <ul className={this.getSuggestsClasses()}>
           {this.getSuggestItems()}
         </ul>
