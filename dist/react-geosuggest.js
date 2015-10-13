@@ -28,7 +28,7 @@ var Geosuggest = React.createClass({
   },
 
   propTypes: {
-    initialLocation: React.PropTypes.obj
+    initialLocation: React.PropTypes.object
   },
 
   /**
