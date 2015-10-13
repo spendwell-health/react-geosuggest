@@ -23,7 +23,7 @@ var Geosuggest = React.createClass({
   },
 
   propTypes: {
-    initialLocation: React.PropTypes.obj
+    initialLocation: React.PropTypes.object
   },
 
   /**
@@ -310,7 +310,7 @@ var Geosuggest = React.createClass({
     }
     decorations += (suggest.iconClass) ? (' ' + suggest.iconClass) : (' ' + this.props.defaultIconClass);
 
-    return decorations
+    return decorations;
   },
   /**
    * The classes for the suggests list

@@ -20,12 +20,12 @@ var GeosuggestItem = React.createClass({
     };
   },
 
-  handleMouseEnter: function(e){
+  handleMouseEnter: function(e) {
     var suggest = JSON.parse(e.target['getAttribute']('data-suggest'));
     this.props.setMouseHoveredSuggest(suggest);
   },
 
-  handleMouseLeave: function(e){
+  handleMouseLeave: function(e) {
     this.props.setMouseHoveredSuggest(null);
   },
 
