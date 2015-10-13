@@ -1,3 +1,6 @@
+### 1.4.13 (2015-10-13)
+* Fix for incorrect propType.
+
 ### 1.4.12 (2015-10-13)
 * Fix warning due to incorrect propType for initialLocation.
 
